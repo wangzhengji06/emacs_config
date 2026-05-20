@@ -156,6 +156,49 @@ The DWIM behaviour of this command is as follows:
   :config
   (delete-selection-mode 1))
 
+(use-package which-key
+  :ensure nil
+  :config
+  (setq which-key-separator "  ")
+  (setq which-key-prefix-prefix "... ")
+  (setq which-key-max-display-columns 3)
+  (setq which-key-idle-delay 1.0)
+  (setq which-key-idle-secondary-delay 0.25)
+  (setq which-key-add-column-padding 1)
+  (setq which-key-max-description-length 40)
+
+  (which-key-mode 1))
+
+(setq bookmark-save-flag 1)
+
+(setq save-interprogram-paste-before-kill t)
+
+(when (and (eq system-type 'gnu/linux)
+           (executable-find "win32yank.exe"))
+
+  ;; Copy from Emacs to Windows clipboard
+  (defun wsl-copy (text)
+    (with-temp-buffer
+      (insert text)
+      (call-process-region
+       (point-min)
+       (point-max)
+       "win32yank.exe"
+       nil
+       nil
+       nil
+       "-i"
+       "--crlf")))
+
+  ;; Paste from Windows clipboard into Emacs
+  (defun wsl-paste ()
+    (string-trim-right
+     (shell-command-to-string "win32yank.exe -o --lf")))
+
+  ;; Integrate with Emacs kill-ring
+  (setq interprogram-cut-function #'wsl-copy)
+  (setq interprogram-paste-function #'wsl-paste))
+
 (use-package envrc
   :ensure t
   :config
@@ -167,7 +210,22 @@ The DWIM behaviour of this command is as follows:
   ;; put your tasks.org or such files here
   (setq org-directory "~/org/")
   ;; M-x org-agenda to read from your files
-  (setq org-agenda-files (list org-directory))) 
+  (setq org-agenda-files (list org-directory)) 
 
+  (setq org-todo-keywords
+        '((sequence "REPEAT(r)" "NEXT(n)" "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "PROJ(p)" "|" "DONE(d)" "CANCELLED(c)")))
+
+  (defface prot/org-todo-alternative
+    '((t :inherit org-todo :foreground "#ffff00"))
+    "Face for alternative TODO-type Org keywords.")
+
+  (defface prot/org-done-alternative
+    '((t :inherit org-done :foreground "#00ffff"))
+    "Face for alternative DONE-type Org keywords.")
+
+  (setq org-todo-keyword-faces
+        '(("NEXT" . prot/org-todo-alternative)
+	  ("SOMEDAY" . prot/org-todo-alternative)
+          ("CANCELLED" . prot/org-done-alternative))))
 
 (load-theme 'modus-vivendi-tinted)
