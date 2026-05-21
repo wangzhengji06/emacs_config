@@ -210,22 +210,54 @@ The DWIM behaviour of this command is as follows:
   ;; put your tasks.org or such files here
   (setq org-directory "~/org/")
   ;; M-x org-agenda to read from your files
-  (setq org-agenda-files (list org-directory)) 
+  (setq org-agenda-files (list org-directory))
 
   (setq org-todo-keywords
         '((sequence "REPEAT(r)" "NEXT(n)" "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "PROJ(p)" "|" "DONE(d)" "CANCELLED(c)")))
 
-  (defface prot/org-todo-alternative
-    '((t :inherit org-todo :foreground "#ffff00"))
-    "Face for alternative TODO-type Org keywords.")
+  (defface prot/org-todo-repeat
+    '((t :inherit org-todo :foreground "#ff66cc" :weight bold))
+    "Face for REPEAT Org keyword.")
 
-  (defface prot/org-done-alternative
-    '((t :inherit org-done :foreground "#00ffff"))
-    "Face for alternative DONE-type Org keywords.")
+  (defface prot/org-todo-next
+    '((t :inherit org-todo :foreground "#00d7ff" :weight bold))
+    "Face for NEXT Org keyword.")
+
+  (defface prot/org-todo-todo
+    '((t :inherit org-todo :foreground "#ff6c6b" :weight bold))
+    "Face for TODO Org keyword.")
+
+  (defface prot/org-todo-waiting
+    '((t :inherit org-todo :foreground "#d7af5f" :weight bold))
+    "Face for WAITING Org keyword.")
+
+  (defface prot/org-todo-someday
+    '((t :inherit org-todo :foreground "#a78bfa" :weight bold))
+    "Face for SOMEDAY Org keyword.")
+
+  (defface prot/org-todo-proj
+    '((t :inherit org-todo :foreground "#51afef" :weight bold))
+    "Face for PROJ Org keyword.")
+
+  (defface prot/org-done-done
+    '((t :inherit org-done :foreground "#98be65" :weight bold))
+    "Face for DONE Org keyword.")
+
+  (defface prot/org-done-cancelled
+    '((t :inherit org-done :foreground "#7f8490" :weight bold :strike-through t))
+    "Face for CANCELLED Org keyword.")
 
   (setq org-todo-keyword-faces
-        '(("NEXT" . prot/org-todo-alternative)
-	  ("SOMEDAY" . prot/org-todo-alternative)
-          ("CANCELLED" . prot/org-done-alternative))))
+        '(("REPEAT" . prot/org-todo-repeat)
+          ("NEXT" . prot/org-todo-next)
+          ("TODO" . prot/org-todo-todo)
+          ("WAITING" . prot/org-todo-waiting)
+          ("SOMEDAY" . prot/org-todo-someday)
+          ("PROJ" . prot/org-todo-proj)
+          ("DONE" . prot/org-done-done)
+          ("CANCELLED" . prot/org-done-cancelled))))  
 
-(load-theme 'modus-vivendi-tinted)
+(use-package zenburn-theme
+  :ensure t
+  :config
+  (load-theme 'zenburn t))
