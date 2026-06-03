@@ -104,6 +104,10 @@ The DWIM behaviour of this command is as follows:
   :init
   (setq tab-always-indent 'complete)
   :config
+  (require 'corfu-auto)
+  (setq corfu-auto t
+      corfu-auto-prefix 3
+      corfu-auto-delay 0.2)
   (global-corfu-mode 1)
   (setq corfu-popupinfo-delay '(1.25 . 0.5))
   (corfu-popupinfo-mode 1)
@@ -111,6 +115,18 @@ The DWIM behaviour of this command is as follows:
   (with-eval-after-load 'savehist
     (corfu-history-mode 1)
     (add-to-list 'savehist-additional-variables 'corfu-history)))
+
+(add-hook 'c++-mode-hook #'eglot-ensure)
+
+;; This is automatically activated by Eglot.
+(use-package flymake
+  :ensure nil ; built-in package
+  :config
+  ;; Do M-x flymake-show-buffer-diagnostics for the complete listing.
+  (setq flymake-show-diagnostics-at-end-of-line 'short)
+  (setq flymake-no-changes-timeout 0.5)
+  (setq flymake-start-on-flymake-mode t)
+  (setq flymake-start-on-save-buffer t))
 
 (use-package display-line-numbers
   :ensure nil
@@ -144,6 +160,8 @@ The DWIM behaviour of this command is as follows:
   :ensure t
   :hook
   (python-mode . ruff-format-on-save-mode))
+
+
 
 (use-package dape
   :ensure t)
