@@ -118,11 +118,11 @@ The DWIM behaviour of this command is as follows:
 
 (use-package corfu-terminal
   :ensure t
-  :prefix (not (>= emacs-major-version 31))
-  :if (not (display-graphic-p))
+  :if (and (< emacs-major-version 31)
+           (not (display-graphic-p)))
+  :after corfu
   :config
   (corfu-terminal-mode 1))
-
 
 (add-hook 'c++-mode-hook #'eglot-ensure)
 
