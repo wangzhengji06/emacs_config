@@ -116,6 +116,14 @@ The DWIM behaviour of this command is as follows:
     (corfu-history-mode 1)
     (add-to-list 'savehist-additional-variables 'corfu-history)))
 
+(use-package corfu-terminal
+  :ensure t
+  :prefix (not (>= emacs-major-version 31))
+  :if (not (display-graphic-p))
+  :config
+  (corfu-terminal-mode 1))
+
+
 (add-hook 'c++-mode-hook #'eglot-ensure)
 
 ;; This is automatically activated by Eglot.
@@ -123,8 +131,8 @@ The DWIM behaviour of this command is as follows:
   :ensure nil ; built-in package
   :config
   ;; Do M-x flymake-show-buffer-diagnostics for the complete listing.
-  (setq flymake-show-diagnostics-at-end-of-line 'short)
-  (setq flymake-no-changes-timeout 0.5)
+  (setq flymake-show-diagnostics-at-end-of-line nil)
+  (setq flymake-no-changes-timeout 3)
   (setq flymake-start-on-flymake-mode t)
   (setq flymake-start-on-save-buffer t))
 
@@ -149,7 +157,12 @@ The DWIM behaviour of this command is as follows:
   :ensure t)
 
 (use-package eglot
-  :ensure nil)
+  :ensure nil
+  :config
+(defun my-eglot-format-buffer ()
+    (when (eglot-current-server)
+      (eglot-format-buffer)))
+(add-hook 'after-save-hook #'my-eglot-format-buffer))
 
 (use-package python
   :ensure nil
