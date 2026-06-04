@@ -154,7 +154,9 @@ The DWIM behaviour of this command is as follows:
   (consult-customize consult-find :sort t :state (consult--file-preview)))
 
 (use-package markdown-mode
-  :ensure t)
+  :ensure t
+  :config
+  (setq markdown-fontify-code-blocks-natively t))
 
 (use-package eglot
   :ensure nil
