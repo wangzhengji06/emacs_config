@@ -206,6 +206,14 @@ The DWIM behaviour of this command is as follows:
 
 (setq save-interprogram-paste-before-kill t)
 
+(add-to-list 'load-path "~/.emacs.d/lisp")
+
+(use-package kitty-keyboard-protocl
+  :ensure nil
+  :hook
+  (tty-setup . kitty-keyboard-protocol-enable))
+
+
 (when (and (eq system-type 'gnu/linux)
            (executable-find "win32yank.exe"))
 
