@@ -298,7 +298,7 @@ The DWIM behaviour of this command is as follows:
           ("DONE" . prot/org-done-done)
           ("CANCELLED" . prot/org-done-cancelled))))  
 
-(use-package zenburn-theme
+(use-package ef-themes
   :ensure t
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'ef-fig t))
