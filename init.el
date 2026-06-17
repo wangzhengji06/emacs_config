@@ -153,6 +153,21 @@ The DWIM behaviour of this command is as follows:
   :config
   (consult-customize consult-find :sort t :state (consult--file-preview)))
 
+(setq split-height-threshold 85)
+(setq split-width-threshold 125)
+(add-to-list 'display-buffer-alist
+             '((or . ((derived-mode . flymake-diagnostics-buffer-mode)
+                      (derived-mode . flymake-project-diagnostics-mode)
+                      (derived-mode . messages-buffer-mode)
+                      (derived-mode . backtrace-mode)))
+               (display-buffer-reuse-mode-window display-buffer-at-bottom)
+               (mode . ( flymake-diagnostics-buffer-mode flymake-project-diagnostics-mode
+                         messages-buffer-mode backtrace-mode))
+               (inhibit-switch-frame . t)
+               (window-height . 0.2)
+               (dedicated . t)
+               (preserve-size . (t . t))))
+
 (use-package markdown-mode
   :ensure t
   :config
@@ -175,8 +190,6 @@ The DWIM behaviour of this command is as follows:
   :ensure t
   :hook
   (python-mode . ruff-format-on-save-mode))
-
-
 
 (use-package dape
   :ensure t)
@@ -240,6 +253,23 @@ The DWIM behaviour of this command is as follows:
   (setq interprogram-cut-function #'wsl-copy)
   (setq interprogram-paste-function #'wsl-paste))
 
+(use-package comint
+  :ensure nil
+  :config
+  (setq ansi-color-for-comint-mode t) ; also see `ansi-color-for-compilation-mode'
+  (setq comint-prompt-read-only t)
+  (setq comint-buffer-maximum-size 9999)
+  (setq comint-completion-autolist t)
+  (setq comint-input-ignoredups t)
+  (setq-default comint-scroll-to-bottom-on-input t)
+  (setq-default comint-scroll-to-bottom-on-output nil)
+  (setq-default comint-input-autoexpand 'input))
+
+(use-package shell
+  :ensure nil
+  :bind ( :map shell-mode-map
+          ("C-c C-k" . comint-clear-buffer)))
+
 (use-package envrc
   :ensure t
   :config
@@ -301,4 +331,7 @@ The DWIM behaviour of this command is as follows:
 (use-package ef-themes
   :ensure t
   :config
-  (load-theme 'ef-fig t))
+  (load-theme 'ef-summer t))
+
+
+
