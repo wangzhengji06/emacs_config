@@ -173,23 +173,27 @@ The DWIM behaviour of this command is as follows:
   :config
   (setq markdown-fontify-code-blocks-natively t))
 
+(add-hook 'c++-mode-hook #'eglot-ensure)
+
 (use-package eglot
   :ensure nil
   :config
-(defun my-eglot-format-buffer ()
+  ;; Python: Eglot -> rass -> basedpyright + ruff
+  (add-to-list 'eglot-server-programs
+               '(python-base-mode . ("rass" "basedruff")))
+
+  ;; Global Eglot format on save, same style as before.
+  ;; Any buffer with active Eglot will format after save.
+  (defun my-eglot-format-buffer ()
     (when (eglot-current-server)
       (eglot-format-buffer)))
-(add-hook 'after-save-hook #'my-eglot-format-buffer))
+
+  (add-hook 'after-save-hook #'my-eglot-format-buffer))
 
 (use-package python
   :ensure nil
   :hook
-  (python-mode . eglot-ensure)) 
-
-(use-package ruff-format
-  :ensure t
-  :hook
-  (python-mode . ruff-format-on-save-mode))
+  (python-base-mode . eglot-ensure))
 
 (use-package dape
   :ensure t)
