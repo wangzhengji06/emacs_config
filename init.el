@@ -124,7 +124,10 @@ The DWIM behaviour of this command is as follows:
   :config
   (corfu-terminal-mode 1))
 
-(add-hook 'c++-mode-hook #'eglot-ensure)
+(add-to-list 'auto-mode-alist '("\\.cppm\\'" . c++-mode))
+(dolist (hook '(c-mode-hook
+                c++-mode-hook))
+  (add-hook hook #'eglot-ensure))
 
 ;; This is automatically activated by Eglot.
 (use-package flymake
@@ -172,8 +175,6 @@ The DWIM behaviour of this command is as follows:
   :ensure t
   :config
   (setq markdown-fontify-code-blocks-natively t))
-
-(add-hook 'c++-mode-hook #'eglot-ensure)
 
 (use-package eglot
   :ensure nil
@@ -335,7 +336,7 @@ The DWIM behaviour of this command is as follows:
 (use-package ef-themes
   :ensure t
   :config
-  (load-theme 'ef-summer t))
+  (load-theme 'ef-owl t))
 
 
 
