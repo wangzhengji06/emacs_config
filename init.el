@@ -74,7 +74,9 @@ The DWIM behaviour of this command is as follows:
 ;; a file called custom.el relative to your init.el
 (use-package nix-mode
   :ensure t
-  :mode "\\.nix\\'")
+  :mode "\\.nix\\'"
+  :hook
+  (nix-mode . eglot-ensure))
 
 (use-package custom
   :ensure nil
@@ -183,6 +185,10 @@ The DWIM behaviour of this command is as follows:
 (use-package eglot
   :ensure nil
   :config
+  ;; Nix: Not sure this will work now
+  (add-to-list 'eglot-server-programs
+               '(nix-mode . ("nixd")))
+  
   ;; Python: Eglot -> rass -> basedpyright + ruff
   (add-to-list 'eglot-server-programs
                '(python-base-mode . ("rass" "basedruff")))
