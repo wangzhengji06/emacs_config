@@ -188,7 +188,13 @@ The DWIM behaviour of this command is as follows:
   ;; Nix: Not sure this will work now
   (add-to-list 'eglot-server-programs
                '(nix-mode . ("nixd")))
-  
+
+  (setq-default
+   eglot-workspace-configuration
+   '(:nixd
+     (:formatting
+      (:command ["nixfmt"]))))
+
   ;; Python: Eglot -> rass -> basedpyright + ruff
   (add-to-list 'eglot-server-programs
                '(python-base-mode . ("rass" "basedruff")))
