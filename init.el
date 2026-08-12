@@ -72,6 +72,10 @@ The DWIM behaviour of this command is as follows:
 ;; By default, Emacs will save some state to the bottom of your
 ;; init.el.  This can be confusing, so we want to put all such data in
 ;; a file called custom.el relative to your init.el
+(use-package nix-mode
+  :ensure t
+  :mode "\\.nix\\'")
+
 (use-package custom
   :ensure nil
   :config
